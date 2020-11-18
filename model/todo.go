@@ -16,8 +16,8 @@ func NewSqlHandler() (*gorm.DB, error) {
 }
 
 type Todo struct {
-	Title  string `json:"title"`
-	Detail string `json:"detail"`
+	Title  string `json:"title" form:"title"`
+	Detail string `json:"detail" form:"detail"`
 }
 
 func GetAll() ([]Todo, error) {
@@ -31,4 +31,16 @@ func GetAll() ([]Todo, error) {
 	var todos []Todo
 	db.Table("todo").Select("title, detail").Find(&todos)
 	return todos, nil
+}
+
+func CreateTodo(t *Todo) error {
+	db, err := NewSqlHandler()
+	defer db.Close()
+	if err != nil {
+		fmt.Println("error", err)
+		return err
+	}
+
+	db.Table("todo").Create(t)
+	return nil
 }

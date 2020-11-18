@@ -1,11 +1,10 @@
 package route
 
 import (
-	"net/http"
-
-	"github.com/KETAKOM/echo-app/handler"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+
+	"github.com/KETAKOM/echo-app/handler/todo"
 )
 
 func Init() *echo.Echo {
@@ -17,27 +16,11 @@ func Init() *echo.Echo {
 	e.Use(middleware.Recover())
 
 	// Routes
-	e.GET("/", hello)
-	// Routes
 	v1 := e.Group("/api/v1")
 	{
-		v1.GET("/", hello)
-		v1.GET("/todo", handler.TodoList)
+		v1.GET("/todo", todo.TodoList)
+		v1.POST("/todoc", todo.CreateTodo)
 	}
 
-	v2 := e.Group("/api/v2")
-	{
-		v2.GET("/", hello2)
-	}
 	return e
-}
-
-// Handler
-func hello(c echo.Context) error {
-	return c.String(http.StatusOK, "Hello, World!")
-}
-
-// Handler
-func hello2(c echo.Context) error {
-	return c.String(http.StatusOK, "Hello, World2!")
 }
