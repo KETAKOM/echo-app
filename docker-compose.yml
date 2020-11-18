@@ -1,0 +1,14 @@
+version: '3'
+services:
+    db:
+        image: mysql:5.7
+        container_name: echo-db
+        environment:
+            MYSQL_DATABASE: echo_app
+        ports:
+            - 33000:3306
+        volumes:
+            - mysql:/var/lib/mysql
+
+volumes:
+    mysql:
