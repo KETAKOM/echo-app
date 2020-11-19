@@ -19,8 +19,9 @@ func Init() *echo.Echo {
 	v1 := e.Group("/api/v1")
 	{
 		v1.GET("/todo", todo.TodoList)
-		v1.POST("/todoc", todo.CreateTodo)
+		v1.POST("/todo", todo.CreateTodo)
+		v1.PUT("/todo", todo.UpdateTodo)
+		v1.DELETE("/todo", todo.DeleteTodo)
 	}
-
 	return e
 }

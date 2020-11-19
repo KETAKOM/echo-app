@@ -16,6 +16,7 @@ func NewSqlHandler() (*gorm.DB, error) {
 }
 
 type Todo struct {
+	ID     uint32 `json:"id" form:"id"`
 	Title  string `json:"title" form:"title"`
 	Detail string `json:"detail" form:"detail"`
 }
@@ -29,7 +30,7 @@ func GetAll() ([]Todo, error) {
 	}
 
 	var todos []Todo
-	db.Table("todo").Select("title, detail").Find(&todos)
+	db.Table("todo").Select("id, title, detail").Find(&todos)
 	return todos, nil
 }
 
@@ -42,5 +43,29 @@ func CreateTodo(t *Todo) error {
 	}
 
 	db.Table("todo").Create(t)
+	return nil
+}
+
+func UpdateTodo(t *Todo) error {
+	db, err := NewSqlHandler()
+	defer db.Close()
+	if err != nil {
+		fmt.Println("error", err)
+		return err
+	}
+
+	db.Table("todo").Update(t)
+	return nil
+}
+
+func DeleteTodo(t *Todo) error {
+	db, err := NewSqlHandler()
+	defer db.Close()
+	if err != nil {
+		fmt.Println("error", err)
+		return err
+	}
+
+	db.Table("todo").Delete(t)
 	return nil
 }
